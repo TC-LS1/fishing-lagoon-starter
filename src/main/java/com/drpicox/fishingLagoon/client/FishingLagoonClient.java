@@ -96,7 +96,7 @@ public class FishingLagoonClient {
 
     private String handle(ClientResponse response) {
         if (response.getStatus() >= 400) {
-            throw new RuntimeException(response.getEntity(String.class));
+            throw new FishingLagoonClientException(response.getEntity(String.class));
         }
         return response.getEntity(String.class);
     }
