@@ -50,7 +50,7 @@ public class FishingLagoonClient {
     }
 
     public ClientRound getRound(String roundId) {
-        var response = get("/rounds/" + roundId);
+        var response = get("/rounds/" + roundId + "?botToken=" + botToken);
         return roundFromJson(response);
     }
 
@@ -66,7 +66,7 @@ public class FishingLagoonClient {
         return roundFromJson(response);
     }
 
-    private ClientRound roundFromJson(String response) {
+    public ClientRound roundFromJson(String response) {
         ClientRound clientRound = gson.fromJson(response, ClientRound.class);
         clientRound.parseActions(actionParser);
         return clientRound;

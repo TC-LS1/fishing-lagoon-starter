@@ -23,7 +23,7 @@ public class Phase2 {
         var activeRounds = client.listActiveRounds();
         ClientRound round;
         if (!activeRounds.isEmpty()) {
-            round = activeRounds.get(0);
+            round = activeRounds.get(0).withSelfId(bot.getId());
         } else {
             round = client.createRound(String.join("\n", "",
                     "maxDensity=2.0",
@@ -33,7 +33,7 @@ public class Phase2 {
                     "lagoonBig.fishPopulation=100"
             ));
         }
-        round = client.seat(round.getId(), round.getAvailableLagoonCount(bot.getId()));
+        round = client.seat(round.getId(), round.getAvailableLagoonCount());
         System.out.println(round);
         Thread.sleep(round.getDescriptor().getSeatMilliseconds());
 

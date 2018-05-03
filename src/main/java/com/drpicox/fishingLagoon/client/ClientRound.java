@@ -12,6 +12,7 @@ public class ClientRound {
     private long startTs;
     private long endTs;
     private String state;
+    private String selfId;
     private ClientRoundDescriptor descriptor;
     private Map<String, ClientRoundSeat> seats;
     private Map<String, ClientRoundCommand> commands;
@@ -31,6 +32,15 @@ public class ClientRound {
 
     public String getState() {
         return state;
+    }
+
+    public String getSelfId() {
+        return selfId;
+    }
+
+    public ClientRound withSelfId(String selfId) {
+        this.selfId = selfId;
+        return this;
     }
 
     public ClientRoundDescriptor getDescriptor() {
@@ -53,6 +63,10 @@ public class ClientRound {
         return scores == null ? null : scores.getBotScore(botId);
     }
 
+    public int getAvailableLagoonCount() {
+        return getAvailableLagoonCount(selfId);
+    }
+
     public int getAvailableLagoonCount(String myBotId) {
         if (seats == null) return getAvailableLagoonCount(false);
         return getAvailableLagoonCount(seats.containsKey(myBotId));
@@ -66,6 +80,10 @@ public class ClientRound {
         var maxDensity = descriptor.getMaxDensity();
         var result = (int)Math.ceil((botCount + plusOne) / maxDensity);
         return result;
+    }
+
+    public List<ClientLagoonDescriptor> getAvailableLagoons() {
+        return getAvailableLagoons(selfId);
     }
 
     public List<ClientLagoonDescriptor> getAvailableLagoons(String myBotId) {
@@ -91,6 +109,7 @@ public class ClientRound {
                 ", startTs=" + startTs +
                 ", endTs=" + endTs +
                 ", state='" + state + '\'' +
+                ", selfId='" + selfId + '\'' +
                 ", descriptor=" + descriptor +
                 ", seats=" + seats +
                 ", commands=" + commands +
