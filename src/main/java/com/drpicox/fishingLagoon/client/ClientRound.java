@@ -11,6 +11,7 @@ public class ClientRound {
     private String id;
     private long startTs;
     private long endTs;
+    private long nowTs;
     private String state;
     private String selfId;
     private ClientRoundDescriptor descriptor;
@@ -41,6 +42,24 @@ public class ClientRound {
     public ClientRound withSelfId(String selfId) {
         this.selfId = selfId;
         return this;
+    }
+
+    public long getNowTs() {
+        return nowTs;
+    }
+
+    public long getMillisecondsForEndSeat() {
+        if (descriptor == null) return -1;
+        var endSeatTs = startTs + descriptor.getSeatMilliseconds();
+
+        return endSeatTs - nowTs;
+    }
+
+    public long getMillisecondsForEndCommand() {
+        if (descriptor == null) return -1;
+        var endCommandTs = startTs + descriptor.getCommandMilliseconds() + descriptor.getCommandMilliseconds();
+
+        return endCommandTs - nowTs;
     }
 
     public ClientRoundDescriptor getDescriptor() {

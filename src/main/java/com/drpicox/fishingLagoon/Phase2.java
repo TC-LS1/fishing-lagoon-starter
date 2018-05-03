@@ -35,11 +35,11 @@ public class Phase2 {
         }
         round = client.seat(round.getId(), round.getAvailableLagoonCount());
         System.out.println(round);
-        Thread.sleep(round.getDescriptor().getSeatMilliseconds());
+        Thread.sleep(round.getMillisecondsForEndSeat());
 
         round = client.command(round.getId(), asList(fish(1), fish(2), fish(3)));
         System.out.println(round);
-        Thread.sleep(round.getDescriptor().getSeatMilliseconds());
+        Thread.sleep(round.getMillisecondsForEndCommand());
 
         round = client.getRound(round.getId());
         System.out.println(round);
