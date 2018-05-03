@@ -125,14 +125,14 @@ public class ClientRound {
     public String toString() {
         return "ClientRound{" +
                 "id='" + id + '\'' +
-                ", startTs=" + startTs +
-                ", endTs=" + endTs +
-                ", state='" + state + '\'' +
-                ", selfId='" + selfId + '\'' +
-                ", descriptor=" + descriptor +
-                ", seats=" + seats +
-                ", commands=" + commands +
-                ", scores=" + scores +
+                ",\n startTs=" + startTs +
+                ",\n endTs=" + endTs +
+                ",\n state='" + state + '\'' +
+                ",\n selfId='" + selfId + '\'' +
+                ",\n descriptor=" + descriptor +
+                ",\n seats=" + seats +
+                ",\n commands=" + commands +
+                ",\n scores=" + scores +
                 '}';
     }
 
