@@ -5,8 +5,6 @@ import com.drpicox.fishingLagoon.client.ClientRound;
 import com.drpicox.fishingLagoon.client.FishingLagoonClient;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Map;
 
 import static com.drpicox.fishingLagoon.actions.Actions.fish;
 import static java.util.Arrays.asList;
@@ -14,7 +12,7 @@ import static java.util.Arrays.asList;
 public class Phase2 {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        var serverUrl = "http://localhost:4567";
+        var serverUrl = System.getenv("FISHING_LAGOON_HOST_URL");
         var botToken = System.getenv("FISHING_LAGOON_BOT_TOKEN");
         var actionParser = new ActionParser();
 
