@@ -33,7 +33,7 @@ public class Phase2 {
                     "lagoonBig.fishPopulation=100"
             ));
         }
-        round = client.seat(round.getId(), round.getAvailableLagoonCount());
+        round = client.seat(round.getId(), round.getAvailableLagoonCount() - 1);
         System.out.println(round);
         Thread.sleep(round.getMillisecondsForEndSeat());
 
