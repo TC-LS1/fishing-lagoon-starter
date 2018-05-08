@@ -1,10 +1,12 @@
 package com.drpicox.fishingLagoon.client;
 
+import com.drpicox.fishingLagoon.actions.Action;
 import com.drpicox.fishingLagoon.actions.ActionParser;
+import com.drpicox.fishingLagoon.bots.BotId;
+import com.drpicox.fishingLagoon.lagoon.Lagoon;
+import com.drpicox.fishingLagoon.lagoon.LagoonRound;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ClientRound {
 
@@ -60,6 +62,10 @@ public class ClientRound {
         var endCommandTs = startTs + descriptor.getCommandMilliseconds() + descriptor.getCommandMilliseconds();
 
         return endCommandTs - nowTs;
+    }
+
+    public long getMillisecondsForEnd() {
+        return endTs - nowTs;
     }
 
     public ClientRoundDescriptor getDescriptor() {
@@ -119,6 +125,36 @@ public class ClientRound {
             result.add(descriptor.getLagoons().get(lagoonIndex));
         }
         return result;
+    }
+
+    public LagoonRound getLagoonRound() {
+        var round = new LagoonRound(descriptor.getWeekCount());
+
+        for (var clientLagoon: getAvailableLagoons()) {
+            var lagoon = new Lagoon(clientLagoon.getFishPopulation());
+            round = round.addLagoons(lagoon);
+        }
+
+        if (seats != null) {
+            for (var entry: seats.entrySet()) {
+                var bot = new BotId(entry.getKey());
+                var seat = entry.getValue();
+                round = round
+                        .addCompetitors(bot)
+                        .seatBotAt(bot, seat.getLagoonIndex());
+            }
+        }
+
+        if (commands != null) {
+            for (var entry: commands.entrySet()) {
+                var bot = new BotId(entry.getKey());
+                var command = entry.getValue();
+                var actions = command.getActions();
+                round = round.putBotActions(bot, actions.toArray(new Action[actions.size()]));
+            }
+        }
+
+        return round;
     }
 
     @Override
