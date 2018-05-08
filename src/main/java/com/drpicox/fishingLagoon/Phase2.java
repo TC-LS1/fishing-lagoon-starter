@@ -1,10 +1,15 @@
 package com.drpicox.fishingLagoon;
 
 import com.drpicox.fishingLagoon.actions.ActionParser;
+import com.drpicox.fishingLagoon.bots.BotId;
+import com.drpicox.fishingLagoon.client.ClientBot;
 import com.drpicox.fishingLagoon.client.ClientRound;
 import com.drpicox.fishingLagoon.client.FishingLagoonClient;
+import com.drpicox.fishingLagoon.strategy.Strategy;
+import com.drpicox.fishingLagoon.strategy.drpicox.TitForTatStrategy;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.drpicox.fishingLagoon.actions.Actions.fish;
 import static java.util.Arrays.asList;
@@ -16,31 +21,57 @@ public class Phase2 {
         var botToken = System.getenv("FISHING_LAGOON_BOT_TOKEN");
         var actionParser = new ActionParser();
 
+        var strategy = new TitForTatStrategy();
         var client = new FishingLagoonClient(serverUrl, botToken, actionParser);
         var bot = client.getBot();
-        var activeRounds = client.listActiveRounds();
+        var botId = new BotId(bot.getId());
+
+        for (var i = 0; i < 3; i++)
+            combatRound(strategy, client, botId);
+    }
+
+    private static void combatRound(Strategy strategy, FishingLagoonClient client, BotId botId) throws InterruptedException {
         ClientRound round;
-        if (!activeRounds.isEmpty()) {
-            round = activeRounds.get(0).withSelfId(bot.getId());
-        } else {
-            round = client.createRound(String.join("\n", "",
-                    "maxDensity=2.0",
-                    "weekCount=3",
-                    "lagoons=lagoonSmall,lagoonBig",
-                    "lagoonSmall.fishPopulation=5",
-                    "lagoonBig.fishPopulation=100"
-            ));
+        try {
+            round = getActiveRoundOrCreate(client, botId);
+        } catch (Throwable th) {
+            round = getActiveRoundOrCreate(client, botId);
         }
-        round = client.seat(round.getId(), round.getAvailableLagoonCount() - 1);
+
+        System.out.println("SEATING");
+        round = client.getRound(round.getId());
+        var lagoonIndex = strategy.seat(botId, round.getLagoonRound());
+        round = client.seat(round.getId(), lagoonIndex);
         System.out.println(round);
         Thread.sleep(round.getMillisecondsForEndSeat());
 
-        round = client.command(round.getId(), asList(fish(1), fish(2), fish(3)));
+        System.out.println("COMMANDING");
+        round = client.getRound(round.getId());
+        var actions = strategy.getOrders(botId, round.getLagoonRound());
+        round = client.command(round.getId(), asList(actions));
         System.out.println(round);
         Thread.sleep(round.getMillisecondsForEndCommand());
 
+        System.out.println("SCORING");
         round = client.getRound(round.getId());
+        strategy.learnFromRound(botId, round.getLagoonRound());
         System.out.println(round);
+        Thread.sleep(round.getMillisecondsForEnd());
+    }
+
+    private static ClientRound getActiveRoundOrCreate(FishingLagoonClient client, BotId botId) {
+        var activeRounds = client.listActiveRounds();
+        if (!activeRounds.isEmpty()) {
+            return activeRounds.get(0).withSelfId(botId.getValue());
+        }
+
+        return client.createRound(String.join("\n", "",
+            "maxDensity=3.0",
+            "weekCount=4",
+            "lagoons=lagoonSmall,lagoonBig",
+            "lagoonSmall.fishPopulation=10",
+            "lagoonBig.fishPopulation=11"
+        ));
     }
 
 }
