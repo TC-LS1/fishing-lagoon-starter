@@ -7,7 +7,6 @@ import com.google.gson.reflect.TypeToken;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 // http://www.mkyong.com/webservices/jax-rs/restful-java-client-with-jersey-client/

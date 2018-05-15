@@ -33,6 +33,10 @@ public class ClientRound {
         return endTs;
     }
 
+    public long getNowTs() {
+        return nowTs;
+    }
+
     public String getState() {
         return state;
     }
@@ -44,10 +48,6 @@ public class ClientRound {
     public ClientRound withSelfId(String selfId) {
         this.selfId = selfId;
         return this;
-    }
-
-    public long getNowTs() {
-        return nowTs;
     }
 
     public long getMillisecondsForEndSeat() {
@@ -70,6 +70,10 @@ public class ClientRound {
 
     public ClientRoundDescriptor getDescriptor() {
         return descriptor;
+    }
+
+    public Set<String> getBots() {
+        return seats.keySet();
     }
 
     public ClientRoundSeat getBotSeat(String botId) {
@@ -163,6 +167,7 @@ public class ClientRound {
                 "id='" + id + '\'' +
                 ",\n startTs=" + startTs +
                 ",\n endTs=" + endTs +
+                ",\n nowTs=" + nowTs +
                 ",\n state='" + state + '\'' +
                 ",\n selfId='" + selfId + '\'' +
                 ",\n descriptor=" + descriptor +
