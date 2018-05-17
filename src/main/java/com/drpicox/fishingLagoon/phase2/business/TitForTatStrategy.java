@@ -1,4 +1,4 @@
-package com.drpicox.fishingLagoon.strategy.drpicox;
+package com.drpicox.fishingLagoon.phase2.business;
 
 import com.drpicox.fishingLagoon.actions.Action;
 import com.drpicox.fishingLagoon.actions.FishAction;
@@ -6,6 +6,7 @@ import com.drpicox.fishingLagoon.bots.BotId;
 import com.drpicox.fishingLagoon.lagoon.Lagoon;
 import com.drpicox.fishingLagoon.lagoon.LagoonHistory;
 import com.drpicox.fishingLagoon.lagoon.LagoonRound;
+import com.drpicox.fishingLagoon.phase2.persistence.TraitorsStore;
 import com.drpicox.fishingLagoon.strategy.Strategy;
 
 import java.util.*;
@@ -15,7 +16,11 @@ import static com.drpicox.fishingLagoon.actions.Actions.rest;
 
 public class TitForTatStrategy extends Strategy {
 
-    private Set<BotId> traitors = new HashSet<>();
+    private TraitorsStore traitors;
+
+    public TitForTatStrategy(TraitorsStore traitors) {
+        this.traitors = traitors;
+    }
 
     @Override
     public int seat(BotId botId, LagoonRound round) {
@@ -47,7 +52,7 @@ public class TitForTatStrategy extends Strategy {
     private List<BotId> getLagoonTraitors(BotId botId, Lagoon lagoon) {
         List<BotId> lagoonBots = lagoon.getBots();
         List<BotId> lagoonTraitors = new ArrayList<>(lagoonBots);
-        lagoonTraitors.retainAll(traitors);
+        lagoonTraitors.retainAll(traitors.list());
         lagoonTraitors.remove(botId);
 
         return lagoonTraitors;
@@ -127,7 +132,7 @@ public class TitForTatStrategy extends Strategy {
         for (BotId competitorId: competitors) {
             boolean isTraitor = isTraitor(lagoonRound, competitorId);
             if (isTraitor) {
-                traitors.add(competitorId);
+                traitors.save(competitorId);
             }
         }
     }
