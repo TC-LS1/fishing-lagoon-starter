@@ -19,9 +19,9 @@ public class Phase2 {
 
         var actionParser = new ActionParser();
         var remoteServer = new FishingLagoonClient(serverUrl, botToken, actionParser);
-        var combatController = new RemoteCombatController(myStrategy, remoteServer);
+        var remoteCombatController = new RemoteCombatController(myStrategy, remoteServer);
 
-        combatController.run();
+        remoteCombatController.run();
     }
 
 }

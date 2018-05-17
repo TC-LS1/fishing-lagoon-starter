@@ -16,10 +16,10 @@ import static com.drpicox.fishingLagoon.actions.Actions.rest;
 
 public class TitForTatStrategy extends Strategy {
 
-    private TraitorsStore traitors;
+    private TraitorsStore traitorsStore;
 
-    public TitForTatStrategy(TraitorsStore traitors) {
-        this.traitors = traitors;
+    public TitForTatStrategy(TraitorsStore traitorsStore) {
+        this.traitorsStore = traitorsStore;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class TitForTatStrategy extends Strategy {
     private List<BotId> getLagoonTraitors(BotId botId, Lagoon lagoon) {
         List<BotId> lagoonBots = lagoon.getBots();
         List<BotId> lagoonTraitors = new ArrayList<>(lagoonBots);
-        lagoonTraitors.retainAll(traitors.list());
+        lagoonTraitors.retainAll(traitorsStore.list());
         lagoonTraitors.remove(botId);
 
         return lagoonTraitors;
@@ -132,7 +132,7 @@ public class TitForTatStrategy extends Strategy {
         for (BotId competitorId: competitors) {
             boolean isTraitor = isTraitor(lagoonRound, competitorId);
             if (isTraitor) {
-                traitors.save(competitorId);
+                traitorsStore.save(competitorId);
             }
         }
     }
