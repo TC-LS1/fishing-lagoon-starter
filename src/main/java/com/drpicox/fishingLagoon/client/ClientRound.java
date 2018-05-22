@@ -59,7 +59,7 @@ public class ClientRound {
 
     public long getMillisecondsForEndCommand() {
         if (descriptor == null) return -1;
-        var endCommandTs = startTs + descriptor.getCommandMilliseconds() + descriptor.getCommandMilliseconds();
+        var endCommandTs = startTs + descriptor.getSeatMilliseconds() + descriptor.getCommandMilliseconds();
 
         return endCommandTs - nowTs;
     }
