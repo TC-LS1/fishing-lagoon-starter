@@ -103,6 +103,7 @@ public class ClientRound {
 
     public int getAvailableLagoonCount(boolean isSeated) {
         if (descriptor == null) return 1;
+        if (seats == null) return 1;
 
         var botCount = seats.size();
         var plusOne = isSeated ? 0 : 1;
