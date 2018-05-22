@@ -41,8 +41,7 @@ public class TraitorStrategy extends Strategy {
 
     private long getTraitorFishesFor(Lagoon lagoon) {
         long availableFish = lagoon.getLagoonFishCount();
-        double botCount = lagoon.getBots().size();
-        return (long) Math.ceil(availableFish + 0.99 / botCount);
+        return availableFish;
     }
 
     private Action[] toArray(List<Action> actions) {
