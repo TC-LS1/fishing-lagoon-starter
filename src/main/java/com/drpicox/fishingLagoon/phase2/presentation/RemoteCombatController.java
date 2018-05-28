@@ -33,7 +33,7 @@ public class RemoteCombatController implements Runnable {
     }
 
     private void waitForBeforeNewRound() throws InterruptedException {
-        Thread.sleep(10L * SECOND);
+        Thread.sleep(1L * SECOND);
     }
 
     private BotId fetchBotIdFromRemoteServer() {
@@ -63,6 +63,9 @@ public class RemoteCombatController implements Runnable {
         return remoteServer.createRound(String.join("\n", "",
             "maxDensity=3.0",
             "weekCount=4",
+            "seatMilliseconds=5000",
+            "commandMilliseconds=5000",
+            "scoreMilliseconds=5000",
             "lagoons=lagoonSmall,lagoonBig",
             "lagoonSmall.fishPopulation=10",
             "lagoonBig.fishPopulation=11"
