@@ -122,12 +122,12 @@ public class ClientRound {
     }
 
     public List<ClientLagoonDescriptor> getAvailableLagoons(boolean isSeated) {
-        if (descriptor == null) return new ArrayList<>(descriptor.getLagoons().subList(0, 1));
+        if (descriptor == null) return new ArrayList<>();
 
         var result = new ArrayList<ClientLagoonDescriptor>();
         int lagoonCount = getAvailableLagoonCount(isSeated);
         for (int lagoonIndex = 0; lagoonIndex < lagoonCount; lagoonIndex++) {
-            result.add(descriptor.getLagoons().get(lagoonIndex));
+            result.add(descriptor.getLagoon(lagoonIndex));
         }
         return result;
     }

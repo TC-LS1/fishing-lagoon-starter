@@ -36,6 +36,10 @@ public class ClientRoundDescriptor {
         return new ArrayList<>(lagoons);
     }
 
+    public ClientLagoonDescriptor getLagoon(int lagoonIndex) {
+        return lagoons.get(lagoonIndex % lagoons.size());
+    }
+
     @Override
     public String toString() {
         return "ClientRoundDescriptor{" +
